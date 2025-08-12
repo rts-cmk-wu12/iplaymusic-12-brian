@@ -14,7 +14,7 @@ export default function CommonHeader() {
 	useEffect(function () {
 		console.log(pathname)
 		switch (pathname) {
-			case pathname.includes("/album"):
+			case "/":
 				setTitle("Featured")
 				break;
 			case "/categories":

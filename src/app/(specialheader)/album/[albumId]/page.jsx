@@ -3,6 +3,25 @@ import TrackItem from "@/components/ui/track-item";
 import { cookies } from "next/headers";
 import Image from "next/image";
 
+export async function generateMetadata({ params }) {
+	const { albumId } = await params;
+	const cookieStore = await cookies();
+
+	const access_token = cookieStore.get("ipm_access_token");
+
+	const response = await fetch("https://api.spotify.com/v1/albums/" + albumId, {
+		headers: {
+			Authorization: "Bearer " + access_token.value
+		}
+	});
+
+	const data = await response.json();
+
+	return {
+		title: data.name
+	}
+}
+
 export default async function AlbumDetailPage({ params }) {
 	const { albumId } = await params;
 	const cookieStore = await cookies();
@@ -16,7 +35,7 @@ export default async function AlbumDetailPage({ params }) {
 	});
 
 	const data = await response.json();
-	console.log(data);
+
 
 	return (
 		<>

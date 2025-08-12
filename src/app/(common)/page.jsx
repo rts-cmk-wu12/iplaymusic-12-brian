@@ -1,17 +1,9 @@
 import FeaturedCard from "@/components/ui/featured-card";
 import { cookies } from "next/headers";
 
-const albums = [
-  {
-    id: 1,
-    name: "The Greatest Showman",
-    image: "https://placehold.co/325x425"
-  }, {
-    id: 2,
-    name: "Back In Black",
-    image: "https://placehold.co/325x425"
-  }
-];
+export const metadata = {
+  title: "Featured"
+};
 
 export default async function Featured() {
   const cookieStore = await cookies();
