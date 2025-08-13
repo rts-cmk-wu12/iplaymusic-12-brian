@@ -3,7 +3,7 @@ import { FaPlay } from "react-icons/fa";
 
 export default function TrackItem({ track }) {
 	return (
-		<article className="p-2 grid grid-cols-[2rem_auto_3rem] gap-4">
+		<article className="p-2 grid grid-cols-[2rem_auto_3rem] gap-4 items-center">
 			<div className="bg-orange rounded-full h-8 w-8 flex items-center justify-center">
 				<FaPlay className="text-white" />
 			</div>

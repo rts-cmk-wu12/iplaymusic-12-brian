@@ -36,11 +36,22 @@ export default async function AlbumDetailPage({ params }) {
 
 	const data = await response.json();
 
-
 	return (
 		<>
-			<Heading level={2}>{data.name}</Heading>
-			<Image src={data.images[0].url} width={data.images[0].width} height={data.images[0].height} alt="" />
+			<div className="grid grid-rows-2">
+				<Image
+					priority
+					src={data.images[0].url}
+					width={data.images[0].width}
+					height={data.images[0].height}
+					className="row-start-1 row-end-3 col-start-1 col-end-2"
+					alt="" />
+				<div className="row-start-1 row-end-3 col-start-1 col-end-2 bg-gradient-to-br from-gray-500 to-black opacity-50"></div>
+				<div className="row-start-1 row-end-2 col-start-1 col-end-2 p-6">
+					<Heading level={3} >{data.name}</Heading>
+					<span className="text-white">{data.tracks.items.length} Songs</span>
+				</div>
+			</div>
 			<ul>
 				{data.tracks.items.map(track => <li key={track.id}><TrackItem track={track} /></li>)}
 			</ul>

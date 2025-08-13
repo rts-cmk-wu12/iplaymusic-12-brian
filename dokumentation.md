@@ -2,14 +2,22 @@
 Brian Emilius, WU12
 
 ## Tech-stack
-* Next.js
-* React
-* Git
-* Tailwind
-* React-icons
-* SASS
-* Web-API fra Spotify
-* Zod
+* **Next.js**  
+Et front-end framework baseret på React.js som også giver adgang til server-side komponenter og -actions, samt mappebaseret routing. Server-side komponenter og funktioner giver en større sikkerhed, da al koden afvikles på serveren fremfor i klienten.
+* **React**  
+Et bibliotek der giver mig mulighed for at lave komponenter og håndtere states på en god og let måde. React har et stort community med et stort modul-bibliotek, som er aktivt, vel-dokumenteret og vel-understøttet. Det er også det mest brugte front-end bibliotek i verden, så efterspørgslen på React-udviklere er stor.
+* **Git**  
+Et versionsstyringsværktøj, som lader mig lave branches og versioner af min kode, så jeg let kan gå tilbage til tidligere versioner, hvis jeg for eksempel har lavet en fejl. Jeg bruger Git sammen med GitHub.
+* **Tailwind**  
+Et utility-baseret mobile-first CSS bibliotek.
+* **React-icons**  
+Et ikon-bibliotek, som er beregnet på React.
+* **SASS**  
+En udvidelse til CSS, som lader mig lave funktioner, variabler, mixins og nesting. Jeg kan opdele min CSS i moduler og dermed genbruge kode flere steder.
+* **Web-API fra Spotify**  
+Et interface til at få adgang til Spotify's data, så jeg kan lave min egen app. Dette er den eneste måde hvor jeg lovligt kan få adgang til Spotify's data.
+* **Zod**  
+Et valideringsbibliotek til objekter og strings. Jeg bruger Zod til blandt andet at validere bruger-input fra formularer.
 
 ## Kode-eksempel
 Common Header komponent (components/ui/common-header.jsx)

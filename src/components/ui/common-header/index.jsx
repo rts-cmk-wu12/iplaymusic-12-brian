@@ -12,7 +12,6 @@ export default function CommonHeader() {
 	const router = useRouter();
 
 	useEffect(function () {
-		console.log(pathname)
 		switch (pathname) {
 			case "/":
 				setTitle("Featured")
@@ -24,8 +23,8 @@ export default function CommonHeader() {
 	}, [pathname]);
 
 	return (
-		<div className="fixed bg-white top-0 left-0 px-6 pt-4 w-full z-100">
-			<header className="flex justify-between mb-8">
+		<div className="fixed bg-white top-0 left-0 px-6 py-4 w-full z-100">
+			<header className="flex justify-between">
 				<button onClick={() => router.back()}>
 					<LuChevronLeft />
 				</button>
@@ -34,9 +33,6 @@ export default function CommonHeader() {
 				</HeaderTitle>
 				<button><LuSearch /></button>
 			</header>
-			<Heading level={2}>
-				{title}
-			</Heading>
 		</div>
 	)
 }

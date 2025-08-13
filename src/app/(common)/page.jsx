@@ -17,10 +17,9 @@ export default async function Featured() {
   });
 
   const data = await response.json();
-  console.log("data", data);
 
   return (
-    <div className="flex flex-col gap-4 pb-18 pt-24">
+    <div className="flex flex-col gap-4 pb-18 pt-10">
       {data.albums.items.map(album => <FeaturedCard key={album.id} album={album} />)}
     </div>
   );
