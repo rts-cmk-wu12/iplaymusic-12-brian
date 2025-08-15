@@ -67,3 +67,7 @@
 body {
   font-family: "Poppins", Arial, sans-serif;
 }
+
+.albumListHeight {
+  height: calc(100dvh - 320px - 64px);
+}

@@ -1,4 +1,6 @@
 import Heading from "@/components/typography/heading";
+import AppNavigationBar from "@/components/ui/app-navigation-bar";
+import CommonHeader from "@/components/ui/common-header";
 import TrackItem from "@/components/ui/track-item";
 import { cookies } from "next/headers";
 import Image from "next/image";
@@ -38,23 +40,27 @@ export default async function AlbumDetailPage({ params }) {
 
 	return (
 		<>
-			<div className="grid grid-rows-2">
-				<Image
-					priority
-					src={data.images[0].url}
-					width={data.images[0].width}
-					height={data.images[0].height}
-					className="row-start-1 row-end-3 col-start-1 col-end-2"
-					alt="" />
-				<div className="row-start-1 row-end-3 col-start-1 col-end-2 bg-gradient-to-br from-gray-500 to-black opacity-50"></div>
-				<div className="row-start-1 row-end-2 col-start-1 col-end-2 p-6">
-					<Heading level={3} >{data.name}</Heading>
-					<span className="text-white">{data.tracks.items.length} Songs</span>
+			<CommonHeader transparent={true} />
+			<main>
+				<div className="grid grid-rows-2 h-[20rem]">
+					<Image
+						priority
+						src={data.images[0].url}
+						width={data.images[0].width}
+						height={data.images[0].height}
+						className="row-start-1 row-end-3 col-start-1 col-end-2 h-[20rem] object-cover"
+						alt="" />
+					<div className="row-start-1 row-end-3 col-start-1 col-end-2 bg-gradient-to-br from-gray-500 to-black opacity-50"></div>
+					<div className="row-start-1 row-end-2 col-start-1 col-end-2 p-6 z-10 flex flex-col place-content-end">
+						<Heading level={3}>{data.name}</Heading>
+						<span className="text-white">{data.tracks.items.length} Songs</span>
+					</div>
 				</div>
-			</div>
-			<ul>
-				{data.tracks.items.map(track => <li key={track.id}><TrackItem track={track} /></li>)}
-			</ul>
+				<ul className="albumListHeight overflow-y-scroll">
+					{data.tracks.items.map(track => <li key={track.id}><TrackItem track={track} /></li>)}
+				</ul>
+			</main>
+			<AppNavigationBar />
 		</>
 	);
 }
