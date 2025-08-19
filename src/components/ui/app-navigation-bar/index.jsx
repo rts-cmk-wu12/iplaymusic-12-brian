@@ -35,10 +35,10 @@ export default function AppNavigationBar() {
 	return (
 		<nav className="shadow-top fixed bg-white bottom-0 px-6 py-2 w-full h-16 flex justify-between items-center">
 			<Link href="/albums">
-				<GradientIcon active={pathname === "/albums"} icon={<FaRecordVinyl size={32} />} />
+				<GradientIcon active={pathname.includes("/album")} icon={<FaRecordVinyl size={32} />} />
 			</Link>
 			<Link href="/playlists">
-				<GradientIcon icon={<FaListAlt size={32} />} />
+				<GradientIcon active={pathname === "/playlists"} icon={<FaListAlt size={32} />} />
 			</Link>
 			<Link href="/">
 				<GradientIcon active={pathname === "/"} icon={<TiStarFullOutline size={32} />} />

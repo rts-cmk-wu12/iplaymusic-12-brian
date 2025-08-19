@@ -15,6 +15,9 @@ export default function CommonHeader({ transparent = false }) {
 			case pathname === "/":
 				setTitle("Featured")
 				break;
+			case pathname === "/playlists":
+				setTitle("Playlists");
+				break;
 			case pathname === "/categories":
 				setTitle("Categories");
 				break;

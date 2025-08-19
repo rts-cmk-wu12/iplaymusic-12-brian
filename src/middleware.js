@@ -44,5 +44,5 @@ export default async function middleware(request) {
 }
 
 export const config = {
-	matcher: ["/", "/album/:path*"]
+	matcher: ["/", "/album/:path*", "/playlists"]
 };

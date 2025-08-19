@@ -1,6 +1,17 @@
 # Dokumentation for iPlayMusic
 Brian Emilius, WU12
 
+<img src="./public/file.svg">
+
+## Sådan kommer du i gang
+`npm install`
+
+`npm run dev`
+
+https://minadresse.dk/iplaymusic
+
+Jeg har lavet valgfri opgave A
+
 ## Tech-stack
 * **Next.js**  
 Et front-end framework baseret på React.js som også giver adgang til server-side komponenter og -actions, samt mappebaseret routing. Server-side komponenter og funktioner giver en større sikkerhed, da al koden afvikles på serveren fremfor i klienten.
