@@ -57,7 +57,7 @@ export default async function AlbumDetailPage({ params }) {
 					</div>
 				</div>
 				<ul className="albumListHeight overflow-y-scroll">
-					{data.tracks.items.map(track => <li key={track.id}><TrackItem track={track} /></li>)}
+					{data.tracks.items.map(track => <li key={track.id}><TrackItem track={track} albumCover={data.images[0]} /></li>)}
 				</ul>
 			</main>
 			<AppNavigationBar />

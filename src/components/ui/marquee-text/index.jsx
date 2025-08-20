@@ -15,7 +15,7 @@ export default function MarqueeText({ name, className = "" }) {
 	return (
 		<div
 			ref={containerRef}
-			className={"w-[250px] overflow-hidden whitespace-nowrap relative " + className}
+			className={"w-[240px] overflow-hidden whitespace-nowrap relative " + className}
 		>
 			<span
 				ref={textRef}
