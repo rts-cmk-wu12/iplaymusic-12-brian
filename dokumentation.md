@@ -68,3 +68,6 @@ export default function CommonHeader() {
 ```
 
 Jeg starter med at kalde en React hook "useState" som er en funktion, der returnerer et array. Arrayet indeholder 2 elementer: Et state og en sætter-funktion til dette state. useState tager imod et argument "initialState" som er værdien for statet ved start.
+
+## Ting, jeg har lavet om og hvorfor
+* ting nr 1: blah blah blah

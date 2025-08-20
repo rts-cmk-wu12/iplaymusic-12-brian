@@ -1,4 +1,6 @@
+import Player from "@/components/ui/player";
 import "./globals.css";
+import PlayerProvider from "@/providers/player-provider";
 
 export const metadata = {
 	title: {
@@ -12,7 +14,10 @@ export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<body>
-				{children}
+				<PlayerProvider>
+					{children}
+					<Player />
+				</PlayerProvider>
 			</body>
 		</html>
 	);
