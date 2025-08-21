@@ -3,7 +3,7 @@
 import { playerContext } from "@/providers/player-provider";
 import { msToTime } from "@/utils/time";
 import Image from "next/image";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa";
 
 function useDebounce(value, delay = 300) {
@@ -20,28 +20,74 @@ function useDebounce(value, delay = 300) {
 	return debounceValue;
 }
 
+function reducer(state, action) {
+	switch (action.type) {
+		case "setController":
+			return {
+				...state,
+				controller: action.controller
+			}
+		case "setDuration":
+			return {
+				...state,
+				duration: action.duration
+			}
+		case "setPosition":
+			return {
+				...state,
+				position: action.position
+			}
+		case "setLocalPosition":
+			return {
+				...state,
+				localPosition: action.localPosition
+			}
+		case "setPaused":
+			return {
+				...state,
+				isPaused: action.isPaused
+			}
+		case "toggleSeeking":
+			return {
+				...state,
+				isSeeking: !action.isSeeking
+			}
+		case "setDurationAndPosition":
+			return {
+				...state,
+				duration: action.duration,
+				position: action.position,
+			}
+	}
+
+	throw new Error("Unknown action: " + action.type);
+}
+
 export default function Player() {
 	const { showPlayer, currentTrack, albumCover } = useContext(playerContext);
 	const controlRef = useRef();
-	const [controller, setController] = useState();
-	const [isPaused, setIsPaused] = useState(false);
-	const [timing, setTiming] = useState({ duration: 0, position: 0 });
-	const [localPosition, setLocalPosition] = useState(0);
-	const [isSeeking, setIsSeeking] = useState(false);
-	const debouncedPosition = useDebounce(localPosition);
+	const [playerState, dispatch] = useReducer(reducer, {
+		controller: null,
+		isPaused: false,
+		duration: 0,
+		position: 0,
+		localPosition: 0,
+		isSeeking: false,
+	});
+	const debouncedPosition = useDebounce(playerState.localPosition);
 
 	useEffect(function () {
-		if (!isSeeking) {
-			setLocalPosition(timing.position);
+		if (!playerState.isSeeking) {
+			dispatch({ type: "setLocalPosition", localPosition: playerState.position });
 		}
-	}, [timing.position, isSeeking]);
+	}, [playerState.position, playerState.isSeeking]);
 
 	useEffect(function () {
-		if (isSeeking && debouncedPosition !== timing.position) {
-			controller.seek(Math.floor(debouncedPosition / 1000));
-			setIsSeeking(false);
+		if (playerState.isSeeking && debouncedPosition !== playerState.position) {
+			playerState.controller.seek(Math.floor(debouncedPosition / 1000));
+			dispatch({ type: "toggleSeeking" });
 		}
-	}, [debouncedPosition, timing.position]);
+	}, [debouncedPosition, playerState.position]);
 
 	useEffect(function () {
 		window.onSpotifyIframeApiReady = function (IFrameAPI) {
@@ -52,11 +98,11 @@ export default function Player() {
 			};
 			const callback = (EmbedController) => {
 				EmbedController.play();
-				setController(EmbedController);
+				dispatch({ type: "setController", controller: EmbedController });
 				EmbedController.addListener("playback_update", function (event) {
-					setTiming(() => { return { duration: event.data.duration, position: event.data.position } });
-					if (event.data.isPaused) setIsPaused(true);
-					else setIsPaused(false);
+					dispatch({ type: "setDurationAndPosition", duration: event.data.duration, position: event.data.position });
+					if (event.data.isPaused) dispatch({ type: "setPaused", isPaused: true });
+					else dispatch({ type: "setPaused", isPaused: false });
 				});
 			};
 			IFrameAPI.createController(controlRef.current, options, callback);
@@ -65,8 +111,8 @@ export default function Player() {
 	}, [currentTrack]);
 
 	function changeHandler(event) {
-		setIsSeeking(true);
-		setLocalPosition(event.target.value);
+		dispatch({ type: "toggleSeeking" });
+		dispatch({ type: "setLocalPosition", localPosition: event.target.value });
 	}
 
 	return showPlayer ? (
@@ -76,19 +122,19 @@ export default function Player() {
 				<script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 				<Image src={albumCover.url} width={albumCover.width} height={albumCover.height} alt="" className="w-12 h-auto col-span-1" />
 				<div className="col-span-5">
-					<button onClick={() => controller.togglePlay()}>
-						{isPaused ? <FaPlay /> : <FaPause />}
+					<button onClick={() => playerState.controller.togglePlay()}>
+						{playerState.isPaused ? <FaPlay /> : <FaPause />}
 					</button>
 					<p>{currentTrack.name}</p>
 				</div>
 				<input
 					type="range"
-					value={localPosition}
-					max={timing.duration}
+					value={playerState.localPosition}
+					max={playerState.duration}
 					className="col-span-5"
 					onChange={changeHandler}
 				/>
-				<span className="col-span-1 place-self-end">{msToTime(timing.duration - timing.position)}</span>
+				<span className="col-span-1 place-self-end">{msToTime(playerState.duration - playerState.position)}</span>
 			</section>
 		</>
 	) : null;
