@@ -6,12 +6,42 @@ import Image from "next/image";
 import { useContext, useEffect, useRef, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa";
 
+function useDebounce(value, delay = 300) {
+	const [debounceValue, setDebounceValue] = useState(value);
+
+	useEffect(function () {
+		const timer = setTimeout(function () {
+			setDebounceValue(value);
+		}, delay);
+
+		return () => clearTimeout(timer);
+	}, [value, delay]);
+
+	return debounceValue;
+}
+
 export default function Player() {
 	const { showPlayer, currentTrack, albumCover } = useContext(playerContext);
 	const controlRef = useRef();
 	const [controller, setController] = useState();
 	const [isPaused, setIsPaused] = useState(false);
 	const [timing, setTiming] = useState({ duration: 0, position: 0 });
+	const [localPosition, setLocalPosition] = useState(0);
+	const [isSeeking, setIsSeeking] = useState(false);
+	const debouncedPosition = useDebounce(localPosition);
+
+	useEffect(function () {
+		if (!isSeeking) {
+			setLocalPosition(timing.position);
+		}
+	}, [timing.position, isSeeking]);
+
+	useEffect(function () {
+		if (isSeeking && debouncedPosition !== timing.position) {
+			controller.seek(Math.floor(debouncedPosition / 1000));
+			setIsSeeking(false);
+		}
+	}, [debouncedPosition, timing.position]);
 
 	useEffect(function () {
 		window.onSpotifyIframeApiReady = function (IFrameAPI) {
@@ -34,6 +64,11 @@ export default function Player() {
 		};
 	}, [currentTrack]);
 
+	function changeHandler(event) {
+		setIsSeeking(true);
+		setLocalPosition(event.target.value);
+	}
+
 	return showPlayer ? (
 		<>
 			<div id="embed-iframe" ref={controlRef}></div>
@@ -46,7 +81,13 @@ export default function Player() {
 					</button>
 					<p>{currentTrack.name}</p>
 				</div>
-				<input type="range" value={timing.position} max={timing.duration} className="col-span-5" />
+				<input
+					type="range"
+					value={localPosition}
+					max={timing.duration}
+					className="col-span-5"
+					onChange={changeHandler}
+				/>
 				<span className="col-span-1 place-self-end">{msToTime(timing.duration - timing.position)}</span>
 			</section>
 		</>
