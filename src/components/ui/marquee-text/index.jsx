@@ -22,7 +22,7 @@ export default function MarqueeText({ name, className = "" }) {
 				style={{
 					display: "inline-block",
 					paddingRight: scrollNeeded ? "100%" : "0", // giver plads til looping
-					animation: scrollNeeded ? "scrollText 16s linear 3s infinite" : "none",
+					animation: scrollNeeded ? "scrollText 16s linear 500ms infinite" : "none",
 				}}
 			>
 				{name}

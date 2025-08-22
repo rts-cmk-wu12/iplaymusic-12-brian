@@ -84,8 +84,10 @@ export default function Player() {
 
 	useEffect(function () {
 		if (playerState.isSeeking && debouncedPosition !== playerState.position) {
-			playerState.controller.seek(Math.floor(debouncedPosition / 1000));
-			dispatch({ type: "toggleSeeking" });
+			new Promise(resolve => {
+				playerState.controller.seek(Math.floor(debouncedPosition / 1000));
+				resolve();
+			}).then(() => dispatch({ type: "toggleSeeking" }));
 		}
 	}, [debouncedPosition, playerState.position]);
 
@@ -116,10 +118,10 @@ export default function Player() {
 	}
 
 	return showPlayer ? (
-		<>
+		<div>
+			<script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 			<div id="embed-iframe" ref={controlRef}></div>
 			<section className="text-white bg-linear-to-br from-pink to-orange w-[90%] h-24 z-100 fixed bottom-20 mx-[5%] rounded-md p-4 grid grid-cols-6">
-				<script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 				<Image src={albumCover.url} width={albumCover.width} height={albumCover.height} alt="" className="w-12 h-auto col-span-1" />
 				<div className="col-span-5">
 					<button onClick={() => playerState.controller.togglePlay()}>
@@ -136,6 +138,6 @@ export default function Player() {
 				/>
 				<span className="col-span-1 place-self-end">{msToTime(playerState.duration - playerState.position)}</span>
 			</section>
-		</>
+		</div>
 	) : null;
 }
